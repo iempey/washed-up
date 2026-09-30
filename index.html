@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="description" content="The shittiest sunglasses on Earth.* *They're actually pretty great.">
+<meta property="og:title" content="Washed Up">
+<meta property="og:description" content="The shittiest sunglasses on Earth.* *They're actually pretty great.">
+<meta property="og:image" content="https://iempey.github.io/washed-up/original-pair.jpg">
+<meta property="og:url" content="https://iempey.github.io/washed-up/">
+<meta name="twitter:card" content="summary_large_image">
+<title>Washed Up Waitlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue:wght@400;700&family=Instrument+Sans:wght@400;500;600;700&family=VT323&display=swap">
+<style>
+  /* One committed look: a 2003 home page. Deliberately single-theme. */
+  :root {
+    --navy: #000080;
+    --yellow: #FFFF00;
+    --silver: #C0C0C0;
+    --silver-dark: #808080;
+    --cyan: #00FFFF;
+    --magenta: #FF00FF;
+    --lime: #00FF00;
+    --black: #000000;
+    --white: #FFFFFF;
+    /* the part that works */
+    --card: #FFFFFF;
+    --ink: #121417;
+    --ink-soft: #5B6069;
+    --line: #D9DCE1;
+    --orange: #FF5A00;
+    --orange-soft: #FFF1E8;
+    --serif: "Times New Roman", Times, Georgia, serif;
+    --wordart: "Anton", Impact, "Arial Narrow Bold", sans-serif;
+    --comic: "Comic Neue", "Comic Sans MS", "Chalkboard SE", cursive;
+    --pixel: "VT323", "Courier New", monospace;
+    --modern: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --win: Tahoma, Verdana, "Segoe UI", sans-serif;
+  }
+
+  [hidden] { display: none !important; }
+  img { max-width: 100%; }
+
+  body {
+    margin: 0;
+    background-color: var(--navy);
+    background-image:
+      radial-gradient(var(--white) 1px, transparent 1.5px),
+      radial-gradient(var(--yellow) 1px, transparent 1.5px);
+    background-size: 56px 56px, 88px 88px;
+    background-position: 0 0, 28px 40px;
+    color: var(--yellow);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.45;
+    padding-inline: 16px;
+  }
+
+  a { color: var(--cyan); }
+  a:visited { color: var(--magenta); }
+  :focus-visible { outline: 3px dashed var(--lime); outline-offset: 3px; }
+
+  .page {
+    max-width: 760px; /* the width of an 800x600 monitor, obviously */
+    margin: 0 auto;
+    padding-block: 12px 40px;
+    display: grid;
+    gap: 22px;
+  }
+
+  /* ---------- marquee + construction ---------- */
+  .marquee {
+    overflow: hidden;
+    background: var(--black);
+    border: 2px solid var(--lime);
+    color: var(--lime);
+    font-family: var(--pixel);
+    font-size: 22px;
+    line-height: 1.3;
+    padding-block: 4px;
+  }
+  .marquee .track {
+    display: inline-flex;
+    white-space: nowrap;
+    animation: scroll 26s linear infinite;
+  }
+  .marquee .track span { padding-inline-end: 48px; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+
+  .construction {
+    background: repeating-linear-gradient(45deg, #FFD400 0 16px, var(--black) 16px 32px);
+    padding: 8px;
+    text-align: center;
+  }
+  .construction span {
+    display: inline-block;
+    background: var(--black);
+    color: #FFD400;
+    font-family: var(--win);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    padding: 4px 12px;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead { text-align: center; display: grid; gap: 6px; }
+  .welcome {
+    margin: 0;
+    font-family: var(--comic);
+    font-weight: 700;
+    color: var(--cyan);
+    font-size: 18px;
+  }
+  .wordart {
+    margin: 0;
+    font-family: var(--wordart);
+    font-weight: 400;
+    font-size: clamp(64px, 17vw, 132px);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    background: linear-gradient(180deg, #FFF45C 0%, #FFB000 45%, #FF2A00 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--black);
+    filter: drop-shadow(3px 3px 0 var(--magenta)) drop-shadow(3px 3px 0 var(--black));
+    transform: perspective(420px) rotateX(14deg) skewX(-7deg);
+    padding-block: 8px 4px;
+  }
+  .tagline {
+    margin: 4px 0 0;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--white);
+    text-wrap: balance;
+  }
+  .tagline sup { color: var(--yellow); font-size: 0.7em; }
+  .tiny-print {
+    margin: 0;
+    font-size: 11px;
+    color: var(--silver);
+    letter-spacing: 0.02em;
+  }
+  .new { margin: 8px 0 0; font-size: 18px; }
+  .blink {
+    color: var(--magenta);
+    font-weight: 700;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { visibility: hidden; } }
+
+  .rainbow {
+    height: 6px;
+    border: 0;
+    margin: 0;
+    background: linear-gradient(90deg, #FF0000, #FF8A00, #FFFF00, #00FF00, #00FFFF, #0000FF, #FF00FF);
+  }
+
+  /* ---------- Win98-ish windows ---------- */
+  .window {
+    background: var(--silver);
+    color: var(--black);
+    border: 3px outset var(--white);
+    box-shadow: 1px 1px 0 var(--black);
+  }
+  .titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(90deg, var(--navy), #1084D0);
+    color: var(--white);
+    font-family: var(--win);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 3px 4px 3px 8px;
+  }
+  .winbtns { display: flex; gap: 2px; }
+  .winbtns span {
+    width: 18px; height: 16px;
+    display: grid; place-items: center;
+    background: var(--silver);
+    color: var(--black);
+    border: 2px outset var(--white);
+    font-size: 11px; line-height: 1;
+  }
+  .window-body { padding: 14px 18px 18px; }
+  .window h2 {
+    margin: 0 0 10px;
+    font-family: var(--serif);
+    font-size: 26px;
+    line-height: 1.15;
+    color: var(--navy);
+    text-wrap: balance;
+  }
+  .window p { margin: 0 0 10px; }
+  .window p:last-child { margin-bottom: 0; }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+  @media (min-width: 720px) {
+    .hero { grid-template-columns: 1.05fr 1fr; }
+  }
+  .exhibit { margin: 0; }
+  .exhibit img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 2px inset var(--white);
+  }
+  .exhibit figcaption {
+    padding: 10px 12px 12px;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+  .intro { margin: 0; font-size: 18px; }
+  .intro b { color: var(--white); }
+
+  /* ---------- the part that works ---------- */
+  .works {
+    background: var(--card);
+    color: var(--ink);
+    font-family: var(--modern);
+    border-radius: 18px;
+    padding: 24px 22px 22px;
+    box-shadow: 0 18px 40px rgba(0, 0, 40, 0.45), 0 0 0 4px rgba(255, 255, 255, 0.18);
+    display: grid;
+    gap: 16px;
+  }
+  .works-flag {
+    justify-self: start;
+    margin: 0;
+    background: var(--orange-soft);
+    color: #B33F00;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+  }
+  .works h2 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.12;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .works .sub { margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.45; }
+  .works form { display: grid; gap: 16px; }
+  .field { display: grid; gap: 6px; }
+  .field label, .works legend {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .works input[type="email"], .works input[type="text"] {
+    font: 500 16px/1.2 var(--modern);
+    color: var(--ink);
+    background: var(--white);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .works input::placeholder { color: #9AA0A8; }
+  .works input[type="email"]:focus, .works input[type="text"]:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 90, 0, 0.18);
+  }
+  .works input[aria-invalid="true"] { border-color: #D1242F; }
+  .works fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .works legend { padding: 0; margin-bottom: 8px; }
+  .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice { position: relative; }
+  .choice input {
+    position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer;
+  }
+  .choice span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 13px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    background: var(--white);
+    transition: background 120ms, border-color 120ms;
+  }
+  .choice input:checked + span {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+  .choice input:focus-visible + span { outline: 3px solid rgba(255, 90, 0, 0.45); outline-offset: 2px; }
+  .error { margin: -6px 0 0; color: #D1242F; font-size: 13px; font-weight: 500; }
+  .btn {
+    font: 700 16px/1 var(--modern);
+    color: var(--white);
+    background: var(--ink);
+    border: 0;
+    border-radius: 999px;
+    padding: 15px 22px;
+    cursor: pointer;
+    transition: background 140ms;
+  }
+  .btn:hover { background: var(--orange); }
+  .btn:focus-visible { outline: 3px solid rgba(255, 90, 0, 0.5); outline-offset: 3px; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+  .btn.ghost:hover { background: var(--orange-soft); }
+  .price { margin: 0; font-size: 13px; color: var(--ink-soft); line-height: 1.45; }
+  .success { display: grid; gap: 12px; }
+  .success h2 { color: var(--ink); }
+  .success p { margin: 0; font-size: 15px; line-height: 1.5; }
+  .preview-note {
+    font-size: 12px !important;
+    color: var(--ink-soft);
+    border-top: 1px dashed var(--line);
+    padding-top: 10px;
+  }
+
+  /* ---------- flaws ---------- */
+  .flaws { margin: 0 0 14px; padding-left: 22px; font-size: 19px; }
+  .flaws li { margin-bottom: 4px; }
+  .flaws sup { color: #C00000; font-weight: 700; }
+  .fine {
+    border-top: 1px solid var(--silver-dark);
+    padding-top: 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    display: grid;
+    gap: 4px;
+  }
+  .fine p { margin: 0 !important; }
+  .fine .sorry { color: #C00000; font-weight: 700; }
+
+  /* ---------- sand ---------- */
+  .sand .window-body {
+    background:
+      radial-gradient(#b89a5c 0.8px, transparent 1.2px) 0 0 / 7px 7px,
+      radial-gradient(#e9d6a8 0.8px, transparent 1.2px) 3px 4px / 9px 9px,
+      #D8C08A;
+    border: 2px inset var(--white);
+    margin: 4px;
+  }
+  .sand h2 { color: #6B3A00; }
+
+  /* ---------- dale ---------- */
+  .dale {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  @media (min-width: 720px) {
+    .dale { grid-template-columns: 1.5fr 1fr; align-items: start; }
+  }
+  .letter {
+    background:
+      linear-gradient(90deg, transparent 38px, #F2A0A0 38px, #F2A0A0 40px, transparent 40px),
+      repeating-linear-gradient(180deg, #FFFEF4 0 27px, #AFC8E8 27px 28px);
+    color: #1B2A6B;
+    font-family: var(--comic);
+    font-size: 18px;
+    line-height: 28px;
+    padding: 28px 20px 28px 54px;
+    transform: rotate(-1deg);
+    box-shadow: 4px 4px 0 var(--black);
+  }
+  .letter p { margin: 0 0 28px; }
+  .letter p:last-child { margin: 0; }
+  .missing {
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--serif);
+    text-align: center;
+    padding: 16px;
+    border: 1px solid #999;
+    transform: rotate(1.5deg);
+    box-shadow: 4px 4px 0 var(--black);
+    display: grid;
+    gap: 6px;
+  }
+  .missing-h {
+    margin: 0;
+    font-family: var(--wordart);
+    font-size: 48px;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    color: #C00000;
+  }
+  .mugshot {
+    height: 150px;
+    background: #D6D6D6;
+    border: 2px solid var(--black);
+    display: grid;
+    place-items: center;
+    font-family: var(--wordart);
+    font-size: 96px;
+    color: #8A8A8A;
+  }
+  .missing .name { margin: 0; font-family: var(--wordart); font-size: 30px; letter-spacing: 0.08em; }
+  .missing p { margin: 0; font-size: 15px; line-height: 1.35; }
+
+  /* ---------- footer ---------- */
+  .foot { display: grid; gap: 16px; text-align: center; font-size: 15px; }
+  .foot p { margin: 0; }
+  .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .badge {
+    width: 88px; height: 31px;
+    box-sizing: border-box;
+    display: grid; place-items: center;
+    font-family: var(--win);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.05;
+    text-align: center;
+    border: 2px outset var(--white);
+    padding: 2px;
+  }
+  .b1 { background: #D8C08A; color: #4A2A00; }
+  .b2 { background: var(--black); color: var(--lime); }
+  .b3 { background: #FF00FF; color: var(--white); }
+  .b4 { background: #0000AA; color: var(--yellow); }
+  .counter { display: grid; gap: 6px; justify-items: center; }
+  .digits { display: inline-flex; gap: 2px; background: var(--black); padding: 3px; border: 2px inset var(--silver); }
+  .digits span {
+    font-family: var(--pixel);
+    font-size: 26px;
+    line-height: 1;
+    color: var(--lime);
+    background: #0B1A0B;
+    padding: 2px 5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .small { font-size: 13px; color: var(--silver); }
+  .webring { font-family: var(--win); font-size: 13px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee .track { animation: none; white-space: normal; display: block; padding-inline: 8px; }
+    .marquee .track span[aria-hidden="true"] { display: none; }
+    .blink { animation: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page" id="top">
+
+  <div class="marquee" role="status" aria-label="Announcements">
+    <div class="track">
+      <span>&#9733; NOW ACCEPTING WAITLIST SIGNUPS &#9733; SAND INCLUDED AT NO EXTRA CHARGE &#9733; NOT POLARIZED &#9733; DALE, IF YOU'RE READING THIS, CALL US &#9733; FIRST BATCH: 300 PAIRS &#9733;</span>
+      <span aria-hidden="true">&#9733; NOW ACCEPTING WAITLIST SIGNUPS &#9733; SAND INCLUDED AT NO EXTRA CHARGE &#9733; NOT POLARIZED &#9733; DALE, IF YOU'RE READING THIS, CALL US &#9733; FIRST BATCH: 300 PAIRS &#9733;</span>
+    </div>
+  </div>
+
+  <div class="construction"><span>!! THIS SITE IS UNDER CONSTRUCTION !!</span></div>
+
+  <header class="masthead">
+    <p class="welcome">Welcome to the Official Home Page of</p>
+    <h1 class="wordart">WASHED UP</h1>
+    <p class="tagline">The shittiest sunglasses on Earth.<sup>*</sup></p>
+    <p class="tiny-print">*They're actually pretty great.</p>
+    <p class="new"><span class="blink">NEW!</span> The Dale, model 001, is coming soon.</p>
+  </header>
+
+  <hr class="rainbow">
+
+  <section class="hero">
+    <div style="display:grid; gap:18px;">
+      <figure class="exhibit window">
+        <div class="titlebar"><span>exhibit_a.jpg</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
+        <img src="original-pair.jpg" width="760" height="363" alt="The original pair: glossy black wraparound sunglasses with smoke lenses, sitting on a paper towel on a kitchen counter">
+        <figcaption><b>Exhibit A:</b> the original pair, found floating in the ocean at Gulf Shores, Alabama, summer 2026. Not for sale. It's a holy relic.</figcaption>
+      </figure>
+      <p class="intro">My wife pulled these out of the Gulf. I put them on as a joke. Then I found out they're <b>actually good</b>. So now we're making more, on purpose.</p>
+    </div>
+
+    <div class="works" id="waitlist">
+      <p class="works-flag">This part of the site actually works</p>
+      <div id="form-view" style="display:grid; gap:16px;">
+        <h2>Get on the list for The Dale</h2>
+        <p class="sub">The first batch is 300 pairs. We'll email you when they're ready to order. No spam. We don't have time.</p>
+        <form id="waitlist-form" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="dale@example.com" required aria-describedby="email-error">
+            <p class="error" id="email-error" hidden>That email doesn't look right. Check for a typo and try again.</p>
+          </div>
+
+          <fieldset>
+            <legend>How many pairs will you lose this summer?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="lose" id="lose-one" value="one"><span>Just one</span></label>
+              <label class="choice"><input type="radio" name="lose" id="lose-three" value="three" checked><span>Probably three</span></label>
+              <label class="choice"><input type="radio" name="lose" id="lose-all" value="all"><span>All of them</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Are you Dale?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="dale" id="dale-no" value="no" checked><span>No</span></label>
+              <label class="choice"><input type="radio" name="dale" id="dale-yes" value="yes"><span>Yes</span></label>
+              <label class="choice"><input type="radio" name="dale" id="dale-maybe" value="maybe"><span>I might be Dale</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field" id="dale-extra" hidden>
+            <label for="where">Where'd you lose them?</label>
+            <input id="where" name="where" type="text" placeholder="Gulf Shores, probably">
+          </div>
+
+          <button class="btn" type="submit">Put me on the list</button>
+          <p class="price">About $15 a pair, or 3 for $35 because you'll lose them. Probably. We're still working it out.</p>
+        </form>
+      </div>
+
+      <div class="success" id="success-view" hidden>
+        <h2>You're on the list.</h2>
+        <p>We'll email <strong id="success-email"></strong> when The Dale is ready. Watch for sand.</p>
+        <p id="success-dale" hidden>Wait. Dale? If you really lost a pair at Gulf Shores this summer, we need to talk.</p>
+        <p class="preview-note">Preview only: this form doesn't save signups yet.</p>
+        <button class="btn ghost" type="button" id="again">Sign up someone else</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="window" id="why">
+    <div class="titlebar"><span>why_theyre_shitty.txt</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
+    <div class="window-body">
+      <h2>Why these are the shittiest sunglasses on Earth</h2>
+      <ul class="flaws">
+        <li>They're made of plastic.<sup>*</sup></li>
+        <li>The lenses are plastic too.<sup>**</sup></li>
+        <li>They're bendy. Concerningly bendy.<sup>***</sup></li>
+        <li>They're not polarized.</li>
+        <li>Those vents on the arms? Useless.<sup>****</sup></li>
+        <li>They look like it's 2003.<sup>*****</sup></li>
+      </ul>
+      <div class="fine">
+        <p>* Nylon, technically. Plastic with a better lawyer. Light, flexible and hard to break.</p>
+        <p>** Polycarbonate, the impact-resistant stuff that naturally blocks UV. We're getting ours lab-tested before we put a number on it.</p>
+        <p>*** They bend way back and spring right back instead of snapping.</p>
+        <p class="sorry">No asterisk on "not polarized." There's no upside. We're sorry.</p>
+        <p>**** We honestly don't know what they do. Nobody does.</p>
+        <p>***** Correct.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="window sand">
+    <div class="titlebar"><span>sand.exe</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
+    <div class="window-body">
+      <h2>Now with sand!</h2>
+      <p>Every pair ships with a sealed baggie of genuine sand, because that's how we found the first one.</p>
+      <p>The sand gets its own bag so it can't scratch your lenses. Sand scratches lenses. We learned that the hard way.</p>
+      <p>Don't want sand? Add the <b>$2 de-sanding fee</b> at checkout. We'll leave it out and try not to take it personally.</p>
+    </div>
+  </section>
+
+  <section class="dale" id="dale">
+    <div class="letter">
+      <p>Dear Dale,</p>
+      <p>We found your sunglasses floating in the ocean at Gulf Shores this summer. We meant to give them back. Instead, we started a company.</p>
+      <p>We don't know your real name. We don't know what you look like. We just know you had taste before the rest of us.</p>
+      <p>If you lost a pair of black wraparounds at Gulf Shores in summer 2026, get on the list and pick "Yes" under "Are you Dale?" We owe you one.</p>
+      <p>Love,<br>Everyone who wears a pair</p>
+    </div>
+    <div class="missing">
+      <p class="missing-h">MISSING</p>
+      <div class="mugshot" aria-hidden="true">?</div>
+      <p class="name">DALE</p>
+      <p><b>Last seen:</b> Gulf Shores, AL, summer 2026</p>
+      <p><b>Distinguishing features:</b> unknown. Excellent taste in sunglasses.</p>
+      <p>If found, tell him his glasses are doing great.</p>
+    </div>
+  </section>
+
+  <hr class="rainbow">
+
+  <footer class="foot">
+    <div class="badges" aria-label="Badges">
+      <span class="badge b1">SAND<br>INSIDE</span>
+      <span class="badge b2">NOT<br>POLARIZED</span>
+      <span class="badge b3">DALE<br>APPROVED?</span>
+      <span class="badge b4">Y2K<br>READY</span>
+    </div>
+    <div class="counter">
+      <p>You are visitor number</p>
+      <div class="digits" aria-label="000003"><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>3</span></div>
+      <p class="small">*This counter is fake. So far it's been us, and maybe Dale.</p>
+    </div>
+    <p class="webring"><a href="#top">&#9664; Prev</a> &middot; Shitty Sunglasses Webring &middot; <a href="#top">Next &#9654;</a><br><span class="small">(We're the only member.)</span></p>
+    <p><a href="#waitlist">Sign our guestbook!</a> (It's the waitlist.)</p>
+    <p class="small">Best viewed in Internet Explorer 6 at 800&times;600. Last updated September 29, 2026.</p>
+    <p class="small">&copy; 2026 Washed Up. Not affiliated with any company that makes toilet paper.</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var form = document.getElementById('waitlist-form');
+    var email = document.getElementById('email');
+    var err = document.getElementById('email-error');
+    var extra = document.getElementById('dale-extra');
+    var formView = document.getElementById('form-view');
+    var successView = document.getElementById('success-view');
+    var successEmail = document.getElementById('success-email');
+    var successDale = document.getElementById('success-dale');
+    var again = document.getElementById('again');
+    var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    function daleValue() {
+      var picked = form.querySelector('input[name="dale"]:checked');
+      return picked ? picked.value : 'no';
+    }
+
+    form.addEventListener('change', function (e) {
+      if (e.target.name === 'dale') {
+        extra.hidden = daleValue() === 'no';
+      }
+    });
+
+    email.addEventListener('input', function () {
+      if (!err.hidden && pattern.test(email.value.trim())) {
+        err.hidden = true;
+        email.removeAttribute('aria-invalid');
+      }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var value = email.value.trim();
+      if (!pattern.test(value)) {
+        err.hidden = false;
+        email.setAttribute('aria-invalid', 'true');
+        email.focus();
+        return;
+      }
+      successEmail.textContent = value;
+      successDale.hidden = daleValue() === 'no';
+      formView.hidden = true;
+      successView.hidden = false;
+      again.focus();
+    });
+
+    again.addEventListener('click', function () {
+      form.reset();
+      extra.hidden = true;
+      successView.hidden = true;
+      formView.hidden = false;
+      email.focus();
+    });
+  })();
+</script>
+</body>
+</html>
