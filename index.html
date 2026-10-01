@@ -649,7 +649,7 @@
       <button type="button" class="badge b1" data-anim="sand">SAND<br>INSIDE</button>
       <button type="button" class="badge b2" data-anim="polarized">NOT<br>POLARIZED</button>
       <button type="button" class="badge b3" data-anim="dale">DALE<br>APPROVED?</button>
-      <button type="button" class="badge b4" data-anim="y2k">Y2K<br>READY</button>
+      <button type="button" class="badge b4" data-anim="bendy">VERY<br>BENDY</button>
     </div>
     <div class="counter">
       <p>You are visitor number</p>
@@ -998,32 +998,58 @@
       }
     }
 
-    // Y2K READY: the clock rolls over to 2000, sparks fly, the sunglasses survive.
-    function drawY2K(t) {
-      R(0, 0, 80, 60, '#CFC8B8'); R(0, 50, 80, 10, '#8A6A4A'); R(0, 50, 80, 1, '#6E5238');
-      var hop = t >= 1.25 && t < 1.45 ? -2 : 0;
-      glasses(28, 5 + hop);
-      R(18, 10, 44, 36, '#D9D2BE'); R(18, 10, 44, 1, '#ECE6D4'); R(60, 10, 2, 36, '#BDB49C');
-      R(21, 13, 38, 28, '#BDB49C');
-      var flash = t >= 1.2 && t < 1.32;
-      var flick = t >= 1.32 && t < 1.8 && Math.floor((t - 1.32) / 0.08) % 2 === 0;
-      R(23, 15, 34, 24, flash ? '#FFFFFF' : flick ? '#000000' : '#0A1A6A');
-      R(34, 46, 12, 4, '#BDB49C'); R(28, 50, 24, 2, '#A9A08A');
-      R(55, 42, 2, 1, flick ? '#FF3333' : '#33FF66');
-      if (!flash && !flick) {
-        var date, time;
-        if (t < 1.2) { date = '12/31/1999'; time = '11:59:' + (57 + Math.min(2, Math.floor(t / 0.4))); }
-        else if (t < 2.0) { date = '01/01/2000'; time = '12:00:00'; }
-        else { date = '01/01/2000'; time = 'STILL OK'; }
-        text(date, 80, 44, '#33FF66', 13, 62);
-        text(time, 80, 60, '#33FF66', 16, 62);
+    // VERY BENDY: two hands bend the glasses into a U, let go, and they spring back flat.
+    // The Dale again, as a 26x5 sprite so each column can be pushed up or down.
+    var SPRITE = [];
+    for (var sr = 0; sr < 5; sr++) {
+      var srow = [];
+      for (var sc = 0; sc < 26; sc++) {
+        var v = null;
+        if (sr === 0 || (sc >= 1 && sc <= 10) || (sc >= 15 && sc <= 24) || (sr === 1 && sc >= 11 && sc <= 14)) v = K;
+        if (sr >= 1 && sr <= 3 && ((sc >= 2 && sc <= 9) || (sc >= 16 && sc <= 23))) v = LENS;
+        if (sr === 1 && (sc === 3 || sc === 4 || sc === 17 || sc === 18)) v = '#FFFFFF';
+        srow.push(v);
       }
-      if (t >= 1.22 && t < 2.1) {
-        var dt = t - 1.22;
-        for (var i = 0; i < 14; i++) {
-          var a = i / 14 * Math.PI * 2 + 0.3, sp = 18 + (i % 3) * 6;
-          R(40 + Math.cos(a) * sp * dt, 27 + Math.sin(a) * sp * dt + 30 * dt * dt, 1, 1, i % 2 ? '#FFD400' : '#FF7A00');
+      SPRITE.push(srow);
+    }
+    // amp > 0 pulls the ends down into a U; negative bends it the other way.
+    function bentGlasses(x0, y0, amp) {
+      for (var c = 0; c < 26; c++) {
+        var u = (c - 12.5) / 12.5;
+        var dy = Math.round(amp * (u * u - 0.35));
+        for (var r = 0; r < 5; r++) {
+          if (SPRITE[r][c]) R(x0 + c * 2, y0 + r * 2 + dy, 2, 2, SPRITE[r][c]);
         }
+      }
+    }
+    function hand(x, y, right) {
+      R(right ? x + 6 : x - 14, y + 1, 15, 5, NAVY);
+      R(x, y, 7, 7, SKIN);
+      R(right ? x : x + 6, y + 2, 1, 3, SKIN_DK);
+    }
+    function drawBendy(t) {
+      R(0, 0, 80, 60, '#FFF6D8'); R(0, 46, 80, 14, '#E6D3A3'); R(0, 46, 80, 1, '#CDB57E');
+      var A = 9, x0 = 14, y0 = 24, amp;
+      if (t < 0.4) amp = 0;
+      else if (t < 1.4) amp = A * easeOut(prog(t, 0.4, 1.4));
+      else if (t < 1.7) amp = A + jitter(t, 1.4, 1.7) * 0.6;
+      else { var s = t - 1.7; amp = A * Math.cos(s * 11) * Math.exp(-s * 3.2); }
+      bentGlasses(x0, y0, amp);
+      var holdY = y0 - 1 + Math.round(A * 0.65);
+      if (t < 1.7) {
+        var inP = easeOut(prog(t, 0, 0.4));
+        var hy = y0 - 1 + Math.round(amp * 0.65);
+        hand(lerp(-12, x0 - 5, inP), hy, false);
+        hand(lerp(80, x0 + 51, inP), hy, true);
+      } else {
+        var off = easeIn(prog(t, 1.7, 2.0));
+        hand(lerp(x0 - 5, -22, off), holdY, false);
+        hand(lerp(x0 + 51, 92, off), holdY, true);
+      }
+      if (t >= 1.0 && t < 1.7) text('creak...', 80, 18, '#7A5A2A', 14);
+      if (t >= 1.75 && t < 2.5) text('BOING!', 80, 22 - Math.round(Math.abs(Math.sin((t - 1.75) * 9)) * 4), '#FF5A00', 20);
+      if (t >= 2.7 && Math.floor((t - 2.7) / 0.12) % 2 === 0) {
+        R(57, 21, 1, 5, '#FFFFFF'); R(55, 23, 5, 1, '#FFFFFF');
       }
     }
 
@@ -1031,7 +1057,7 @@
       sand: { title: 'sand_inside.gif', caption: 'Sand installed.', captionAt: 2.5, duration: 3.1, draw: drawSand },
       polarized: { title: 'not_polarized.gif', caption: 'You can still read your phone.', captionAt: 1.6, duration: 3.0, draw: drawPolarized },
       dale: { title: 'dale_approved.gif', caption: 'Approval pending.', captionAt: 1.8, duration: 2.9, draw: drawDale },
-      y2k: { title: 'y2k_ready.gif', caption: 'Y2K compliant. Probably.', captionAt: 2.1, duration: 3.0, draw: drawY2K }
+      bendy: { title: 'very_bendy.gif', caption: 'Still fine.', captionAt: 2.6, duration: 3.2, draw: drawBendy }
     };
 
     var run = 0;
