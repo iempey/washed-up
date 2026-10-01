@@ -323,6 +323,8 @@
   .btn.ghost:hover { background: var(--orange-soft); }
   .price { margin: 0; font-size: 13px; color: var(--ink-soft); line-height: 1.45; }
   .success { display: grid; gap: 12px; }
+  .guard-frame { width: 100%; height: 360px; border: 0; border-radius: 12px; background: var(--white); }
+  .btn[disabled] { opacity: 0.6; cursor: wait; }
   .success h2 { color: var(--ink); }
   .success p { margin: 0; font-size: 15px; line-height: 1.5; }
   .preview-note {
@@ -522,16 +524,23 @@
             <input id="where" name="where" type="text" placeholder="Gulf Shores, probably">
           </div>
 
-          <button class="btn" type="submit">Put me on the list</button>
+          <p class="error" id="submit-error" role="alert" hidden></p>
+          <button class="btn" type="submit" id="submit-btn">Put me on the list</button>
           <p class="price">About $15 a pair, or 3 for $35 because you'll lose them. Probably. We're still working it out.</p>
         </form>
       </div>
 
+      <div class="success" id="guard-view" hidden>
+        <h2>One more thing.</h2>
+        <p>Prove you're a human. Dale counts.</p>
+        <iframe class="guard-frame" id="guard-frame" title="Human check"></iframe>
+      </div>
+
       <div class="success" id="success-view" hidden>
         <h2>You're on the list.</h2>
-        <p>We'll email <strong id="success-email"></strong> when The Dale is ready. Watch for sand.</p>
+        <p>We'll email <strong id="success-email"></strong> when The Dale is ready. Watch your inbox (and maybe your spam folder). Watch for sand.</p>
         <p id="success-dale" hidden>Wait. Dale? If you really lost a pair at Gulf Shores this summer, we need to talk.</p>
-        <p class="preview-note">Preview only: this form doesn't save signups yet.</p>
+        <p class="preview-note" id="preview-note" hidden>Preview only: signups only save on washedupshades.com.</p>
         <button class="btn ghost" type="button" id="again">Sign up someone else</button>
       </div>
     </div>
@@ -621,7 +630,53 @@
     var successEmail = document.getElementById('success-email');
     var successDale = document.getElementById('success-dale');
     var again = document.getElementById('again');
+    var submitErr = document.getElementById('submit-error');
+    var submitBtn = document.getElementById('submit-btn');
+    var guardView = document.getElementById('guard-view');
+    var guardFrame = document.getElementById('guard-frame');
+    var previewNote = document.getElementById('preview-note');
     var pattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    // Signups go to Kit only on the real site; anywhere else (like the Claude preview) is a demo.
+    var KIT_FORM_URL = 'https://app.kit.com/forms/9986617/subscriptions';
+    var LIVE = /(^|\.)washedupshades\.com$/.test(location.hostname);
+    var pendingEmail = null;
+
+    function showSuccess(value) {
+      successEmail.textContent = value;
+      successDale.hidden = daleValue() === 'no';
+      previewNote.hidden = LIVE;
+      formView.hidden = true;
+      guardView.hidden = true;
+      successView.hidden = false;
+      again.focus();
+    }
+
+    function resetButton() {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Put me on the list';
+    }
+
+    function showError(message) {
+      resetButton();
+      submitErr.textContent = message;
+      submitErr.hidden = false;
+    }
+
+    // Kit's "are you human?" check runs in an iframe and reports back by message.
+    window.addEventListener('message', function (e) {
+      var host = '';
+      try { host = new URL(e.origin).hostname; } catch (_) { return; }
+      if (!/(^|\.)(kit|convertkit)\.com$/.test(host)) return;
+      var data = e.data || {};
+      if (data.name === 'ckjs:guard:size' && data.height) {
+        guardFrame.style.height = data.height + 'px';
+      }
+      if (data.name === 'ckjs:guard:confirmed' && pendingEmail) {
+        showSuccess(pendingEmail);
+        pendingEmail = null;
+      }
+    });
 
     function daleValue() {
       var picked = form.querySelector('input[name="dale"]:checked');
@@ -650,17 +705,53 @@
         email.focus();
         return;
       }
-      successEmail.textContent = value;
-      successDale.hidden = daleValue() === 'no';
-      formView.hidden = true;
-      successView.hidden = false;
-      again.focus();
+      submitErr.hidden = true;
+      if (!LIVE) {
+        showSuccess(value);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      var lose = form.querySelector('input[name="lose"]:checked');
+      var where = document.getElementById('where').value.trim();
+      var body = new URLSearchParams();
+      body.append('email_address', value);
+      body.append('fields[pairs_lost]', lose ? lose.value : '');
+      body.append('fields[is_dale]', daleValue());
+      if (where) body.append('fields[where_lost]', where);
+
+      fetch(KIT_FORM_URL, { method: 'POST', headers: { Accept: 'application/json' }, body: body })
+        .then(function (r) {
+          if (!r.ok) throw new Error(r.statusText);
+          return r.json();
+        })
+        .then(function (res) {
+          resetButton();
+          if (res.status === 'success') {
+            showSuccess(value);
+          } else if (res.status === 'quarantined' && res.url) {
+            pendingEmail = value;
+            guardFrame.src = res.url;
+            formView.hidden = true;
+            guardView.hidden = false;
+          } else {
+            var msg = res.errors && res.errors.messages && res.errors.messages[0];
+            showError(msg || "That didn't go through. Check your email address and try again.");
+          }
+        })
+        .catch(function () {
+          showError("We couldn't reach the list. Check your connection and try again.");
+        });
     });
 
     again.addEventListener('click', function () {
       form.reset();
       extra.hidden = true;
       successView.hidden = true;
+      guardView.hidden = true;
+      guardFrame.removeAttribute('src');
+      pendingEmail = null;
       formView.hidden = false;
       email.focus();
     });
