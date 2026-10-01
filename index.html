@@ -13,7 +13,7 @@
 <title>Washed Up Waitlist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue:wght@400;700&family=VT323&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Comic+Neue:wght@400;700&family=Instrument+Sans:wght@400;500;600;700&family=VT323&display=swap">
 <style>
   /* One committed look: a 2003 home page. Deliberately single-theme. */
   :root {
@@ -26,10 +26,18 @@
     --lime: #00FF00;
     --black: #000000;
     --white: #FFFFFF;
+    /* the part that works */
+    --card: #FFFFFF;
+    --ink: #121417;
+    --ink-soft: #5B6069;
+    --line: #D9DCE1;
+    --orange: #FF5A00;
+    --orange-soft: #FFF1E8;
     --serif: "Times New Roman", Times, Georgia, serif;
     --wordart: "Anton", Impact, "Arial Narrow Bold", sans-serif;
     --comic: "Comic Neue", "Comic Sans MS", "Chalkboard SE", cursive;
     --pixel: "VT323", "Courier New", monospace;
+    --modern: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --win: Tahoma, Verdana, "Segoe UI", sans-serif;
   }
 
@@ -107,16 +115,11 @@
     color: var(--cyan);
     font-size: 18px;
   }
-  .welcome, .tagline, .tiny-print, .new {
-    justify-self: center;
-    background: var(--navy);
-    padding-inline: 8px;
-  }
   .wordart {
     margin: 0;
     font-family: var(--wordart);
     font-weight: 400;
-    font-size: clamp(56px, 15vw, 124px);
+    font-size: clamp(64px, 17vw, 132px);
     line-height: 0.95;
     letter-spacing: 0.02em;
     background: linear-gradient(180deg, #FFF45C 0%, #FFB000 45%, #FF2A00 100%);
@@ -220,104 +223,116 @@
     font-size: 15px;
     line-height: 1.35;
   }
-  /* solid backing so the starfield dots don't land between words */
-  .intro {
-    margin: 0;
-    font-size: 18px;
-    background: var(--navy);
-    border: 2px dashed var(--yellow);
-    padding: 12px 14px;
-  }
+  .intro { margin: 0; font-size: 18px; }
   .intro b { color: var(--white); }
 
-  /* ---------- the guestbook (the part that actually works) ---------- */
-  .guestbook .window-body { display: grid; gap: 14px; }
-  .guestbook h2 { margin: 0; }
-  .guestbook p { margin: 0; }
-  .guestbook .sub { font-size: 17px; }
-  .guestbook form { display: grid; gap: 16px; }
-  .field { display: grid; gap: 6px; }
-  .field label, .guestbook legend {
-    font-family: var(--win);
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--black);
+  /* ---------- the part that works ---------- */
+  .works {
+    background: var(--card);
+    color: var(--ink);
+    font-family: var(--modern);
+    border-radius: 18px;
+    padding: 24px 22px 22px;
+    box-shadow: 0 18px 40px rgba(0, 0, 40, 0.45), 0 0 0 4px rgba(255, 255, 255, 0.18);
+    display: grid;
+    gap: 16px;
   }
-  .guestbook input[type="email"], .guestbook input[type="text"] {
-    font: 18px/1.2 var(--serif);
-    color: var(--black);
+  .works-flag {
+    justify-self: start;
+    margin: 0;
+    background: var(--orange-soft);
+    color: #B33F00;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 999px;
+  }
+  .works h2 {
+    margin: 0;
+    font-size: 26px;
+    line-height: 1.12;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .works .sub { margin: 0; color: var(--ink-soft); font-size: 15px; line-height: 1.45; }
+  .works form { display: grid; gap: 16px; }
+  .field { display: grid; gap: 6px; }
+  .field label, .works legend {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .works input[type="email"], .works input[type="text"] {
+    font: 500 16px/1.2 var(--modern);
+    color: var(--ink);
     background: var(--white);
-    border: 3px inset var(--silver);
-    border-radius: 0;
-    padding: 9px 10px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 14px;
     width: 100%;
     box-sizing: border-box;
   }
-  .guestbook input::placeholder { color: #8A8A8A; font-style: italic; }
-  .guestbook input[type="email"]:focus, .guestbook input[type="text"]:focus {
-    outline: 2px dotted var(--black);
-    outline-offset: 2px;
+  .works input::placeholder { color: #9AA0A8; }
+  .works input[type="email"]:focus, .works input[type="text"]:focus {
+    outline: none;
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(255, 90, 0, 0.18);
   }
-  .guestbook input[aria-invalid="true"] { background: #FFF0F0; }
-  .guestbook fieldset {
-    margin: 0;
-    padding: 8px 12px 10px;
-    border: 2px groove var(--white);
-    display: grid;
-    gap: 2px;
+  .works input[aria-invalid="true"] { border-color: #D1242F; }
+  .works fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .works legend { padding: 0; margin-bottom: 8px; }
+  .choices { display: flex; flex-wrap: wrap; gap: 8px; }
+  .choice { position: relative; }
+  .choice input {
+    position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer;
   }
-  .guestbook legend { padding: 0 6px; }
-  .choices { display: grid; gap: 2px; }
-  .choice {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 7px 4px;
-    font-size: 18px;
-    cursor: pointer;
+  .choice span {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 13px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink);
+    background: var(--white);
+    transition: background 120ms, border-color 120ms;
   }
-  .choice input { width: 20px; height: 20px; margin: 0; flex: none; accent-color: var(--navy); }
-  .error { color: #C00000; font-family: var(--win); font-size: 14px; font-weight: 700; }
-  .error::before { content: "\26A0\FE0E  "; }
+  .choice input:checked + span {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--white);
+  }
+  .choice input:focus-visible + span { outline: 3px solid rgba(255, 90, 0, 0.45); outline-offset: 2px; }
+  .error { margin: -6px 0 0; color: #D1242F; font-size: 13px; font-weight: 500; }
   .btn {
-    font: 700 17px/1 var(--win);
-    color: var(--black);
-    background: var(--silver);
-    border: 3px outset var(--white);
-    border-radius: 0;
-    padding: 14px 20px;
+    font: 700 16px/1 var(--modern);
+    color: var(--white);
+    background: var(--ink);
+    border: 0;
+    border-radius: 999px;
+    padding: 15px 22px;
     cursor: pointer;
-    box-shadow: 1px 1px 0 var(--black);
+    transition: background 140ms;
   }
-  .btn:hover { background: #D4D0C8; }
-  .btn:active { border-style: inset; }
-  .btn:focus-visible { outline: 2px dotted var(--black); outline-offset: -8px; }
-  .btn[disabled] { color: var(--silver-dark); cursor: wait; }
-  .price { font-size: 15px; line-height: 1.4; }
+  .btn:hover { background: var(--orange); }
+  .btn:focus-visible { outline: 3px solid rgba(255, 90, 0, 0.5); outline-offset: 3px; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+  .btn.ghost:hover { background: var(--orange-soft); }
+  .price { margin: 0; font-size: 13px; color: var(--ink-soft); line-height: 1.45; }
   .success { display: grid; gap: 12px; }
-  .success p { font-size: 17px; line-height: 1.45; }
-  .guard-frame { width: 100%; height: 360px; border: 3px inset var(--silver); background: var(--white); }
+  .guard-frame { width: 100%; height: 360px; border: 0; border-radius: 12px; background: var(--white); }
+  .btn[disabled] { opacity: 0.6; cursor: wait; }
+  .success h2 { color: var(--ink); }
+  .success p { margin: 0; font-size: 15px; line-height: 1.5; }
   .preview-note {
-    font-size: 13px !important;
-    color: #505050;
-    border-top: 1px solid var(--silver-dark);
+    font-size: 12px !important;
+    color: var(--ink-soft);
+    border-top: 1px dashed var(--line);
     padding-top: 10px;
   }
-  .statusbar {
-    display: flex;
-    gap: 4px;
-    padding: 3px;
-    border-top: 1px solid var(--silver-dark);
-    font-family: var(--win);
-    font-size: 13px;
-  }
-  .statusbar span { border: 1px inset var(--white); padding: 3px 6px; }
-  .statusbar span:first-child { flex: 1; }
-
-  /* ---------- what's new ---------- */
-  .news .window-body { background: var(--white); border: 2px inset var(--white); margin: 4px; }
-  .news ul { margin: 0; padding-left: 20px; display: grid; gap: 10px; font-size: 17px; }
-  .news time { font-family: var(--win); font-weight: 700; color: var(--navy); }
 
   /* ---------- flaws ---------- */
   .flaws { margin: 0 0 14px; padding-left: 22px; font-size: 19px; }
@@ -456,7 +471,7 @@
 
   <header class="masthead">
     <p class="welcome">Welcome to the Official Home Page of</p>
-    <h1 class="wordart">WASHED UP*</h1>
+    <h1 class="wordart">WASHED UP</h1>
     <p class="tagline">The shittiest sunglasses on Earth.<sup>*</sup></p>
     <p class="tiny-print">*They're actually pretty great.</p>
     <p class="new"><span class="blink">NEW!</span> The Dale, model 001, is coming soon.</p>
@@ -474,76 +489,60 @@
       <p class="intro">My wife pulled these out of the Gulf. I put them on as a joke. Then I found out they're <b>actually good</b>. So now we're making more, on purpose.</p>
     </div>
 
-    <section class="window guestbook" id="waitlist">
-      <div class="titlebar"><span>guestbook.exe</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
-      <div class="window-body">
-        <div id="form-view" style="display:grid; gap:14px;">
-          <h2>Sign the Guestbook!*</h2>
-          <p class="sub">*It's the waitlist for The Dale. The first batch is 300 pairs. We'll email you when they're ready to order. No spam. We don't have time.</p>
-          <form id="waitlist-form" novalidate>
-            <div class="field">
-              <label for="email">Your e-mail address:</label>
-              <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="dale@example.com" required aria-describedby="email-error">
-              <p class="error" id="email-error" hidden>That email doesn't look right. Check for a typo and try again.</p>
+    <div class="works" id="waitlist">
+      <p class="works-flag">This part of the site actually works</p>
+      <div id="form-view" style="display:grid; gap:16px;">
+        <h2>Get on the list for The Dale</h2>
+        <p class="sub">The first batch is 300 pairs. We'll email you when they're ready to order. No spam. We don't have time.</p>
+        <form id="waitlist-form" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="dale@example.com" required aria-describedby="email-error">
+            <p class="error" id="email-error" hidden>That email doesn't look right. Check for a typo and try again.</p>
+          </div>
+
+          <fieldset>
+            <legend>How many pairs will you lose this summer?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="lose" id="lose-one" value="one"><span>Just one</span></label>
+              <label class="choice"><input type="radio" name="lose" id="lose-three" value="three" checked><span>Probably three</span></label>
+              <label class="choice"><input type="radio" name="lose" id="lose-all" value="all"><span>All of them</span></label>
             </div>
+          </fieldset>
 
-            <fieldset>
-              <legend>How many pairs will you lose this summer?</legend>
-              <div class="choices">
-                <label class="choice"><input type="radio" name="lose" id="lose-one" value="one"><span>Just one</span></label>
-                <label class="choice"><input type="radio" name="lose" id="lose-three" value="three" checked><span>Probably three</span></label>
-                <label class="choice"><input type="radio" name="lose" id="lose-all" value="all"><span>All of them</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset>
-              <legend>Are you Dale?</legend>
-              <div class="choices">
-                <label class="choice"><input type="radio" name="dale" id="dale-no" value="no" checked><span>No</span></label>
-                <label class="choice"><input type="radio" name="dale" id="dale-yes" value="yes"><span>Yes</span></label>
-                <label class="choice"><input type="radio" name="dale" id="dale-maybe" value="maybe"><span>I might be Dale</span></label>
-              </div>
-            </fieldset>
-
-            <div class="field" id="dale-extra" hidden>
-              <label for="where" id="where-label">Where'd you lose them?</label>
-              <input id="where" name="where" type="text" placeholder="Gulf Shores, probably">
+          <fieldset>
+            <legend>Are you Dale?</legend>
+            <div class="choices">
+              <label class="choice"><input type="radio" name="dale" id="dale-no" value="no" checked><span>No</span></label>
+              <label class="choice"><input type="radio" name="dale" id="dale-yes" value="yes"><span>Yes</span></label>
+              <label class="choice"><input type="radio" name="dale" id="dale-maybe" value="maybe"><span>I might be Dale</span></label>
             </div>
+          </fieldset>
 
-            <p class="error" id="submit-error" role="alert" hidden></p>
-            <button class="btn" type="submit" id="submit-btn">Put me on the list</button>
-            <p class="price">About $15 a pair, or 3 for $35 because you'll lose them. Probably. We're still working it out.</p>
-          </form>
-        </div>
+          <div class="field" id="dale-extra" hidden>
+            <label for="where">Where'd you lose them?</label>
+            <input id="where" name="where" type="text" placeholder="Gulf Shores, probably">
+          </div>
 
-        <div class="success" id="guard-view" hidden>
-          <h2>One more thing.</h2>
-          <p>Prove you're a human. Dale counts.</p>
-          <iframe class="guard-frame" id="guard-frame" title="Human check"></iframe>
-        </div>
-
-        <div class="success" id="success-view" hidden>
-          <h2>Thanks for signing our guestbook!</h2>
-          <p>You're on the list. We'll email <strong id="success-email"></strong> when The Dale is ready. Check your inbox (and maybe your spam folder) to confirm. Watch for sand.</p>
-          <p id="success-dale" hidden>Wait. Dale? If you really lost a pair at Gulf Shores this summer, we need to talk.</p>
-          <p class="preview-note" id="preview-note" hidden>Preview only: signups only save on washedupshades.com.</p>
-          <button class="btn" type="button" id="again">Sign up someone else</button>
-        </div>
+          <p class="error" id="submit-error" role="alert" hidden></p>
+          <button class="btn" type="submit" id="submit-btn">Put me on the list</button>
+          <p class="price">About $15 a pair, or 3 for $35 because you'll lose them. Probably. We're still working it out.</p>
+        </form>
       </div>
-      <div class="statusbar"><span>&#10004; Done. (This part of the site actually works.)</span><span aria-hidden="true">Internet</span></div>
-    </section>
-  </section>
 
-  <section class="window news" id="news">
-    <div class="titlebar"><span>whats_new.txt</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
-    <div class="window-body">
-      <h2>What's New?</h2>
-      <ul>
-        <li><time datetime="2026-09-30">09.30.2026</time> <span class="blink">NEW!</span> Three sample pairs shipped from Taiwan: smoke, clear and yellow. Bend tests, float tests and an unboxing are coming.</li>
-        <li><time datetime="2026-09-30">09.30.2026</time> The factory says they can make them in red. A guy on Discord already asked for 12.</li>
-        <li><time datetime="2026-09-30">09.30.2026</time> We bought washedupshades.com. The site is officially on the internet. The visitor counter is still fake.</li>
-        <li><time datetime="2026-09-30">09.30.2026</time> Dale update: still missing.</li>
-      </ul>
+      <div class="success" id="guard-view" hidden>
+        <h2>One more thing.</h2>
+        <p>Prove you're a human. Dale counts.</p>
+        <iframe class="guard-frame" id="guard-frame" title="Human check"></iframe>
+      </div>
+
+      <div class="success" id="success-view" hidden>
+        <h2>You're on the list.</h2>
+        <p>We'll email <strong id="success-email"></strong> when The Dale is ready. Watch your inbox (and maybe your spam folder). Watch for sand.</p>
+        <p id="success-dale" hidden>Wait. Dale? If you really lost a pair at Gulf Shores this summer, we need to talk.</p>
+        <p class="preview-note" id="preview-note" hidden>Preview only: signups only save on washedupshades.com.</p>
+        <button class="btn ghost" type="button" id="again">Sign up someone else</button>
+      </div>
     </div>
   </section>
 
@@ -555,17 +554,17 @@
         <li>They're made of plastic.<sup>*</sup></li>
         <li>The lenses are plastic too.<sup>**</sup></li>
         <li>They're bendy. Concerningly bendy.<sup>***</sup></li>
-        <li>They're not polarized.<sup>****</sup></li>
-        <li>Those vents on the arms? Useless.<sup>*****</sup></li>
-        <li>They look like it's 2003.<sup>******</sup></li>
+        <li>They're not polarized.</li>
+        <li>Those vents on the arms? Useless.<sup>****</sup></li>
+        <li>They look like it's 2003.<sup>*****</sup></li>
       </ul>
       <div class="fine">
-        <p>* Nylon, technically. Invented for toothbrush bristles and pantyhose. Somehow ended up on your face.</p>
-        <p>** Polycarbonate. Technically plastic. Also what fighter jet canopies are made of.</p>
+        <p>* Nylon, technically. Plastic with a better lawyer. Light, flexible and hard to break.</p>
+        <p>** Polycarbonate, the impact-resistant stuff that naturally blocks UV. We're getting ours lab-tested before we put a number on it.</p>
         <p>*** They bend way back and spring right back instead of snapping.</p>
-        <p>**** The FAA tells pilots not to wear polarized lenses. We're not saying these are pilot sunglasses. We're just saying.</p>
-        <p>***** We honestly don't know what they do. Nobody does.</p>
-        <p>****** Correct.</p>
+        <p class="sorry">No asterisk on "not polarized." There's no upside. We're sorry.</p>
+        <p>**** We honestly don't know what they do. Nobody does.</p>
+        <p>***** Correct.</p>
       </div>
     </div>
   </section>
@@ -614,7 +613,7 @@
     </div>
     <p class="webring"><a href="#top">&#9664; Prev</a> &middot; Shitty Sunglasses Webring &middot; <a href="#top">Next &#9654;</a><br><span class="small">(We're the only member.)</span></p>
     <p><a href="#waitlist">Sign our guestbook!</a> (It's the waitlist.)</p>
-    <p class="small">Best viewed in Internet Explorer 6 at 800&times;600. Last updated September 30, 2026.</p>
+    <p class="small">Best viewed in Internet Explorer 6 at 800&times;600. Last updated September 29, 2026.</p>
     <p class="small">&copy; 2026 Washed Up. Not affiliated with any company that makes toilet paper.</p>
   </footer>
 
@@ -645,11 +644,7 @@
 
     function showSuccess(value) {
       successEmail.textContent = value;
-      var dale = daleValue();
-      successDale.hidden = dale === 'no';
-      successDale.textContent = dale === 'maybe'
-        ? 'Your claim to be Dale is under review. We’ll be in touch. Probably.'
-        : 'Wait. Dale? If you really lost a pair at Gulf Shores this summer, we need to talk.';
+      successDale.hidden = daleValue() === 'no';
       previewNote.hidden = LIVE;
       formView.hidden = true;
       guardView.hidden = true;
@@ -688,22 +683,9 @@
       return picked ? picked.value : 'no';
     }
 
-    // "Yes" gets asked where; "I might be Dale" has to make their case.
-    var DALE_PROMPTS = {
-      yes: { label: "Where'd you lose them?", placeholder: 'Gulf Shores, probably' },
-      maybe: { label: 'Are you sure? Explain how you could be Dale.', placeholder: "My name isn't Dale, but…" }
-    };
-    var whereLabel = document.getElementById('where-label');
-    var whereInput = document.getElementById('where');
-
     form.addEventListener('change', function (e) {
       if (e.target.name === 'dale') {
-        var prompt = DALE_PROMPTS[daleValue()];
-        extra.hidden = !prompt;
-        if (prompt) {
-          whereLabel.textContent = prompt.label;
-          whereInput.placeholder = prompt.placeholder;
-        }
+        extra.hidden = daleValue() === 'no';
       }
     });
 
