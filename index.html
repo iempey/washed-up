@@ -469,7 +469,7 @@
       <figure class="exhibit window">
         <div class="titlebar"><span>exhibit_a.jpg</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
         <img src="original-pair.jpg" width="760" height="363" alt="The original pair: glossy black wraparound sunglasses with smoke lenses, sitting on a paper towel on a kitchen counter">
-        <figcaption><b>Exhibit A:</b> the original pair, found floating in the ocean at Gulf Shores, Alabama, summer 2026. Photographed on a paper towel in my kitchen by our professional photography department (me). Not for sale. It's a holy relic.</figcaption>
+        <figcaption><b>Exhibit A:</b> the original pair, found floating in the ocean at Gulf Shores, Alabama, summer 2026. Not for sale. It's a holy relic.</figcaption>
       </figure>
       <p class="intro">My wife pulled these out of the Gulf. I put them on as a joke. Then I found out they're <b>actually good</b>. So now we're making more, on purpose.</p>
     </div>
@@ -506,7 +506,7 @@
             </fieldset>
 
             <div class="field" id="dale-extra" hidden>
-              <label for="where">Where'd you lose them?</label>
+              <label for="where" id="where-label">Where'd you lose them?</label>
               <input id="where" name="where" type="text" placeholder="Gulf Shores, probably">
             </div>
 
@@ -645,7 +645,11 @@
 
     function showSuccess(value) {
       successEmail.textContent = value;
-      successDale.hidden = daleValue() === 'no';
+      var dale = daleValue();
+      successDale.hidden = dale === 'no';
+      successDale.textContent = dale === 'maybe'
+        ? 'Your claim to be Dale is under review. We’ll be in touch. Probably.'
+        : 'Wait. Dale? If you really lost a pair at Gulf Shores this summer, we need to talk.';
       previewNote.hidden = LIVE;
       formView.hidden = true;
       guardView.hidden = true;
@@ -684,9 +688,22 @@
       return picked ? picked.value : 'no';
     }
 
+    // "Yes" gets asked where; "I might be Dale" has to make their case.
+    var DALE_PROMPTS = {
+      yes: { label: "Where'd you lose them?", placeholder: 'Gulf Shores, probably' },
+      maybe: { label: 'Are you sure? Explain how you could be Dale.', placeholder: "My name isn't Dale, but…" }
+    };
+    var whereLabel = document.getElementById('where-label');
+    var whereInput = document.getElementById('where');
+
     form.addEventListener('change', function (e) {
       if (e.target.name === 'dale') {
-        extra.hidden = daleValue() === 'no';
+        var prompt = DALE_PROMPTS[daleValue()];
+        extra.hidden = !prompt;
+        if (prompt) {
+          whereLabel.textContent = prompt.label;
+          whereInput.placeholder = prompt.placeholder;
+        }
       }
     });
 
