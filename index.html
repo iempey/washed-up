@@ -426,6 +426,57 @@
   .small { font-size: 13px; color: var(--silver); }
   .webring { font-family: var(--win); font-size: 13px; }
 
+  /* ---------- badge animations ---------- */
+  button.badge { margin: 0; cursor: pointer; -webkit-appearance: none; appearance: none; }
+  button.badge:active { border-style: inset; }
+  .anim-pop {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 50;
+    width: min(344px, calc(100vw - 32px));
+    transform: translate(-50%, -50%) scale(0.96);
+    opacity: 0;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    box-shadow: 4px 4px 0 var(--black);
+  }
+  .anim-pop.show { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .anim-pop.fade { opacity: 0; transition-duration: 0.45s; }
+  .anim-close {
+    width: 18px; height: 16px;
+    display: grid; place-items: center;
+    padding: 0;
+    background: var(--silver);
+    color: var(--black);
+    border: 2px outset var(--white);
+    font: 700 11px/1 var(--win);
+    cursor: pointer;
+  }
+  .anim-pop canvas {
+    display: block;
+    width: calc(100% - 8px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin: 4px;
+    box-sizing: border-box;
+    border: 2px inset var(--white);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    background: var(--white);
+  }
+  .anim-caption {
+    margin: 0 !important;
+    padding: 2px 8px 8px;
+    font-family: var(--pixel);
+    font-size: 22px;
+    line-height: 1.1;
+    text-align: center;
+    color: var(--black);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .anim-caption.on { opacity: 1; }
+
   @media (prefers-reduced-motion: reduce) {
     .marquee .track { animation: none; white-space: normal; display: block; padding-inline: 8px; }
     .marquee .track span[aria-hidden="true"] { display: none; }
@@ -593,10 +644,10 @@
 
   <footer class="foot">
     <div class="badges" aria-label="Badges">
-      <span class="badge b1">SAND<br>INSIDE</span>
-      <span class="badge b2">NOT<br>POLARIZED</span>
-      <span class="badge b3">DALE<br>APPROVED?</span>
-      <span class="badge b4">Y2K<br>READY</span>
+      <button type="button" class="badge b1" data-anim="sand">SAND<br>INSIDE</button>
+      <button type="button" class="badge b2" data-anim="polarized">NOT<br>POLARIZED</button>
+      <button type="button" class="badge b3" data-anim="dale">DALE<br>APPROVED?</button>
+      <button type="button" class="badge b4" data-anim="y2k">Y2K<br>READY</button>
     </div>
     <div class="counter">
       <p>You are visitor number</p>
@@ -609,6 +660,12 @@
     <p class="small">&copy; 2026 Washed Up. Not affiliated with Dale.</p>
   </footer>
 
+</div>
+
+<div class="window anim-pop" id="anim-pop" hidden>
+  <div class="titlebar"><span id="anim-title">sand_inside.gif</span><span class="winbtns"><button type="button" class="anim-close" id="anim-close" aria-label="Close">&times;</button></span></div>
+  <canvas id="anim-canvas" width="160" height="120" aria-hidden="true"></canvas>
+  <p class="anim-caption" id="anim-caption" role="status"></p>
 </div>
 
 <script>
@@ -786,6 +843,256 @@
       requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
+  })();
+
+  // ---------- badge animations: tiny pixel-art cartoons ----------
+  (function () {
+    var pop = document.getElementById('anim-pop');
+    var cv = document.getElementById('anim-canvas');
+    if (!pop || !cv || !cv.getContext) return;
+    var ctx = cv.getContext('2d');
+    var titleEl = document.getElementById('anim-title');
+    var capEl = document.getElementById('anim-caption');
+    var REDUCED = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Drawing happens on an 80x60 grid; each grid cell is 2x2 canvas pixels.
+    function R(x, y, w, h, c) { ctx.fillStyle = c; ctx.fillRect(Math.round(x) * 2, Math.round(y) * 2, w * 2, h * 2); }
+    function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+    function prog(t, a, b) { return clamp01((t - a) / (b - a)); }
+    function easeOut(p) { return 1 - (1 - p) * (1 - p); }
+    function easeIn(p) { return p * p; }
+    function lerp(a, b, p) { return a + (b - a) * p; }
+    function jitter(t, a, b) { return t >= a && t < b ? (Math.floor((t - a) / 0.04) % 2 ? 1 : -1) : 0; }
+    function glyph(rows, x, y, c, s) {
+      s = s || 1;
+      for (var r = 0; r < rows.length; r++)
+        for (var q = 0; q < rows[r].length; q++)
+          if (rows[r].charAt(q) === '#') R(x + q * s, y + r * s, s, s, c);
+    }
+    // Text uses real canvas pixels (160x120) and the site's pixel font.
+    function text(str, x, y, color, size, maxW) {
+      ctx.fillStyle = color;
+      ctx.font = size + 'px VT323, "Courier New", monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(str, x, y, maxW || 150);
+    }
+
+    var K = '#000000', LENS = '#3A3F44', SKIN = '#E3A87A', SKIN_DK = '#C98D60', NAVY = '#2B3A8C';
+    var SAND = '#D8C08A', SAND_DK = '#B89A5C', RED = '#C0262D';
+    var QMARK = ['.###.', '#...#', '....#', '..##.', '..#..', '.....', '..#..'];
+    var EXCL = ['..#..', '..#..', '..#..', '..#..', '..#..', '.....', '..#..'];
+
+    // The Dale: black wraparound, 24 wide x 5 tall.
+    function glasses(x, y) {
+      R(x - 1, y, 26, 1, K);
+      R(x, y + 1, 10, 4, K); R(x + 14, y + 1, 10, 4, K);
+      R(x + 1, y + 1, 8, 3, LENS); R(x + 15, y + 1, 8, 3, LENS);
+      R(x + 10, y + 1, 4, 1, K);
+      R(x + 2, y + 1, 2, 1, '#FFFFFF'); R(x + 16, y + 1, 2, 1, '#FFFFFF');
+    }
+
+    function sandBag(x, y) {
+      R(x, y, 10, 12, '#9C9C9C'); R(x + 1, y + 1, 8, 10, '#EFEFEF');
+      R(x + 1, y + 4, 8, 7, SAND);
+      R(x + 2, y + 6, 1, 1, SAND_DK); R(x + 5, y + 5, 1, 1, SAND_DK); R(x + 7, y + 8, 1, 1, SAND_DK); R(x + 3, y + 9, 1, 1, SAND_DK);
+      R(x + 1, y + 2, 8, 1, '#D33A3A');
+    }
+
+    // SAND INSIDE: a hand drops the sand baggie in with the glasses, the lid slams, three grains escape.
+    function drawSand(t) {
+      R(0, 0, 80, 48, '#F2E6C9'); R(0, 48, 80, 12, '#C9A26B'); R(0, 48, 80, 1, '#A8844F');
+      var closed = t >= 2.15;
+      var sx = jitter(t, 2.15, 2.4);
+      R(20 + sx, 22, 40, 26, '#8A5A2B');
+      var bagY = lerp(-16, 29, easeOut(prog(t, 0.2, 1.3)));
+      if (!closed) { sandBag(48 + sx, bagY); glasses(23 + sx, 33); }
+      if (closed) {
+        R(20 + sx, 22, 40, 26, '#B07A3E'); R(58 + sx, 22, 2, 26, '#8A5A2B');
+      } else {
+        R(20 + sx, 40, 40, 8, '#B07A3E'); R(20 + sx, 40, 40, 1, '#C8955A'); R(58 + sx, 40, 2, 8, '#8A5A2B');
+      }
+      var handY = t < 1.3 ? bagY - 5 : lerp(24, -26, easeIn(prog(t, 1.4, 1.9)));
+      if (t < 1.95) {
+        R(50, handY - 30, 6, 30, NAVY);
+        R(48, handY, 10, 5, SKIN); R(47, handY + 1, 2, 3, SKIN_DK);
+      }
+      if (t >= 1.9) {
+        var ly = lerp(-6, 18, easeIn(prog(t, 1.9, 2.15)));
+        R(18 + sx, ly, 44, 4, '#B07A3E'); R(18 + sx, ly, 44, 1, '#C8955A');
+        if (closed) R(38 + sx, 18, 4, 10, '#D9C27A');
+      }
+      var grains = [[57, 62, 51, 2.4], [54, 52, 52, 2.5], [59, 67, 50, 2.6]];
+      for (var i = 0; i < grains.length; i++) {
+        var g = grains[i];
+        if (t >= g[3]) {
+          var p = prog(t, g[3], g[3] + 0.35);
+          var gx = lerp(g[0], g[1], p), gy = lerp(47, g[2], easeIn(p));
+          R(gx, gy, 1, 1, '#FFF1C9'); R(gx, gy + 1, 1, 1, '#8A6A3A');
+        }
+      }
+    }
+
+    function bubble(rows) {
+      R(51, 3, 12, 12, K); R(52, 4, 10, 10, '#FFFFFF');
+      R(51, 15, 2, 2, K); R(49, 17, 2, 1, K);
+      glyph(rows, 55, 5, K);
+    }
+
+    // NOT POLARIZED: a guy in the shades squints at his phone, it's perfectly readable, thumbs up.
+    function drawPolarized(t) {
+      R(0, 0, 80, 60, '#9FD3F0');
+      R(6, 4, 8, 8, '#FFD84A'); R(9, 1, 2, 2, '#FFD84A'); R(9, 13, 2, 2, '#FFD84A'); R(3, 7, 2, 2, '#FFD84A'); R(15, 7, 2, 2, '#FFD84A');
+      R(22, 40, 36, 20, NAVY);
+      R(36, 35, 8, 6, SKIN);
+      R(30, 14, 20, 22, SKIN);
+      R(30, 14, 20, 5, '#5A3A1E'); R(29, 17, 2, 7, '#5A3A1E'); R(49, 17, 2, 7, '#5A3A1E');
+      R(29, 24, 1, 4, SKIN_DK); R(50, 24, 1, 4, SKIN_DK);
+      glasses(28, 21);
+      R(36, 31, 8, 1, '#8A4A3A');
+      if (t >= 1.5) { R(35, 30, 1, 1, '#8A4A3A'); R(44, 30, 1, 1, '#8A4A3A'); }
+      var lit = t >= 1.0;
+      if (lit) R(55, 23, 12, 18, '#D7F0FF');
+      R(56, 24, 10, 16, '#111111');
+      R(57, 25, 8, 13, lit ? '#CDEBFF' : '#1A1F2A');
+      if (lit) { R(58, 27, 6, 1, '#3A4A5A'); R(58, 29, 5, 1, '#3A4A5A'); R(58, 31, 6, 1, '#3A4A5A'); R(58, 33, 4, 1, '#3A4A5A'); }
+      R(54, 36, 6, 6, SKIN);
+      if (t >= 0.2 && t < 1.0) bubble(QMARK);
+      if (t >= 1.0 && t < 1.5) bubble(EXCL);
+      if (t >= 1.5) {
+        var hy = lerp(60, 34, easeOut(prog(t, 1.5, 1.8)));
+        R(13, hy + 7, 10, 30, NAVY);
+        R(14, hy, 8, 8, SKIN); R(16, hy - 5, 3, 5, SKIN); R(14, hy + 2, 8, 1, SKIN_DK);
+      }
+    }
+
+    // DALE APPROVED?: the stamp slams down "DALE APPROVED", then a question mark drops in and wobbles.
+    function drawDale(t) {
+      R(0, 0, 80, 60, '#B8865A');
+      R(0, 12, 80, 1, '#A57650'); R(0, 31, 80, 1, '#A57650'); R(0, 49, 80, 1, '#A57650');
+      var sh = jitter(t, 0.55, 0.7);
+      R(14 + sh, 8, 52, 46, '#FFFFFF');
+      for (var i = 0; i < 9; i++) R(19 + sh, 13 + i * 4, 42, 1, '#D6D6D6');
+      if (t >= 0.55) {
+        ctx.save();
+        ctx.translate((40 + sh) * 2, 64);
+        ctx.rotate(-0.08);
+        ctx.font = '16px VT323, "Courier New", monospace';
+        var w = Math.min(ctx.measureText('DALE APPROVED').width, 84) + 14;
+        ctx.strokeStyle = RED; ctx.lineWidth = 3;
+        ctx.strokeRect(-w / 2, -12, w, 24);
+        text('DALE APPROVED', 0, 1, RED, 16, 84);
+        ctx.restore();
+      }
+      var sy = t < 0.75 ? lerp(-30, 26, easeIn(prog(t, 0.15, 0.55))) : lerp(26, -34, easeOut(prog(t, 0.75, 1.15)));
+      R(30 + sh, sy, 20, 6, '#3A2A1A'); R(30 + sh, sy + 5, 20, 1, RED);
+      R(38 + sh, sy - 6, 4, 6, '#6B3E1F');
+      R(35 + sh, sy - 12, 10, 6, '#8A5530'); R(36 + sh, sy - 13, 8, 1, '#A8703F');
+      if (t >= 1.3) {
+        var qy = lerp(-16, 25, easeOut(prog(t, 1.3, 1.7)));
+        // wobble side to side in whole pixels so the glyph stays crisp
+        var wob = t >= 1.7 ? Math.round(Math.sin((t - 1.7) * 16) * 2 * Math.max(0, 1 - (t - 1.7))) : 0;
+        glyph(QMARK, 65 + wob, qy, RED, 2);
+      }
+    }
+
+    // Y2K READY: the clock rolls over to 2000, sparks fly, the sunglasses survive.
+    function drawY2K(t) {
+      R(0, 0, 80, 60, '#CFC8B8'); R(0, 50, 80, 10, '#8A6A4A'); R(0, 50, 80, 1, '#6E5238');
+      var hop = t >= 1.25 && t < 1.45 ? -2 : 0;
+      glasses(28, 5 + hop);
+      R(18, 10, 44, 36, '#D9D2BE'); R(18, 10, 44, 1, '#ECE6D4'); R(60, 10, 2, 36, '#BDB49C');
+      R(21, 13, 38, 28, '#BDB49C');
+      var flash = t >= 1.2 && t < 1.32;
+      var flick = t >= 1.32 && t < 1.8 && Math.floor((t - 1.32) / 0.08) % 2 === 0;
+      R(23, 15, 34, 24, flash ? '#FFFFFF' : flick ? '#000000' : '#0A1A6A');
+      R(34, 46, 12, 4, '#BDB49C'); R(28, 50, 24, 2, '#A9A08A');
+      R(55, 42, 2, 1, flick ? '#FF3333' : '#33FF66');
+      if (!flash && !flick) {
+        var date, time;
+        if (t < 1.2) { date = '12/31/1999'; time = '11:59:' + (57 + Math.min(2, Math.floor(t / 0.4))); }
+        else if (t < 2.0) { date = '01/01/2000'; time = '12:00:00'; }
+        else { date = '01/01/2000'; time = 'STILL OK'; }
+        text(date, 80, 44, '#33FF66', 13, 62);
+        text(time, 80, 60, '#33FF66', 16, 62);
+      }
+      if (t >= 1.22 && t < 2.1) {
+        var dt = t - 1.22;
+        for (var i = 0; i < 14; i++) {
+          var a = i / 14 * Math.PI * 2 + 0.3, sp = 18 + (i % 3) * 6;
+          R(40 + Math.cos(a) * sp * dt, 27 + Math.sin(a) * sp * dt + 30 * dt * dt, 1, 1, i % 2 ? '#FFD400' : '#FF7A00');
+        }
+      }
+    }
+
+    var ANIMS = {
+      sand: { title: 'sand_inside.gif', caption: 'Sand installed.', captionAt: 2.5, duration: 3.1, draw: drawSand },
+      polarized: { title: 'not_polarized.gif', caption: 'You can still read your phone.', captionAt: 1.6, duration: 3.0, draw: drawPolarized },
+      dale: { title: 'dale_approved.gif', caption: 'Approval pending.', captionAt: 1.8, duration: 2.9, draw: drawDale },
+      y2k: { title: 'y2k_ready.gif', caption: 'Y2K compliant. Probably.', captionAt: 2.1, duration: 3.0, draw: drawY2K }
+    };
+
+    var run = 0;
+    function hide() {
+      var mine = ++run;
+      pop.classList.add('fade');
+      setTimeout(function () {
+        if (mine === run) { pop.hidden = true; pop.classList.remove('fade', 'show'); }
+      }, 460);
+    }
+
+    function play(name) {
+      var a = ANIMS[name];
+      if (!a) return;
+      var id = ++run;
+      titleEl.textContent = a.title;
+      capEl.textContent = a.caption;
+      capEl.classList.remove('on');
+      pop.classList.remove('fade', 'show');
+      pop.hidden = false;
+      requestAnimationFrame(function () { if (id === run) pop.classList.add('show'); });
+      var start = null;
+      function frame(now) {
+        if (id !== run) return;
+        if (start === null) start = now;
+        // Reduced motion: show the last frame and caption, then fade.
+        var elapsed = (now - start) / 1000;
+        var t = REDUCED ? a.duration : elapsed;
+        var end = REDUCED ? 1.6 : a.duration + 0.9;
+        ctx.clearRect(0, 0, cv.width, cv.height);
+        a.draw(Math.min(t, a.duration));
+        if (t >= a.captionAt) capEl.classList.add('on');
+        if (elapsed >= end) { hide(); return; }
+        requestAnimationFrame(frame);
+      }
+      var go = function () { if (id === run) requestAnimationFrame(frame); };
+      if (document.fonts && document.fonts.load) document.fonts.load('16px VT323').then(go, go);
+      else go();
+    }
+
+    document.addEventListener('click', function (e) {
+      var badge = e.target.closest && e.target.closest('[data-anim]');
+      if (badge) play(badge.getAttribute('data-anim'));
+    });
+    document.getElementById('anim-close').addEventListener('click', hide);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !pop.hidden) hide();
+    });
+  })();
+
+  // ---------- tab title trick ----------
+  (function () {
+    var original = document.title;
+    var timer = null;
+    document.addEventListener('visibilitychange', function () {
+      clearTimeout(timer);
+      if (document.hidden) {
+        document.title = 'Dale misses you';
+      } else {
+        document.title = 'WASHED UP* ★ welcome back';
+        timer = setTimeout(function () { document.title = original; }, 3000);
+      }
+    });
   })();
 </script>
 </body>
