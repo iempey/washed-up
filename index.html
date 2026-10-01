@@ -765,6 +765,28 @@
       email.focus();
     });
   })();
+
+  // Scroll the marquee from script. iPhone Safari blanks parts of a long strip
+  // moved by a CSS animation; moving it frame by frame keeps it painted.
+  (function () {
+    var track = document.querySelector('.marquee .track');
+    if (!track || !window.requestAnimationFrame) return;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    track.style.animation = 'none';
+    var SPEED = 60; // pixels per second, about the old CSS speed
+    var x = 0, last = null;
+    function step(now) {
+      if (last !== null) {
+        var half = track.scrollWidth / 2;
+        x -= SPEED * Math.min(now - last, 100) / 1000;
+        if (half > 0 && -x >= half) x += half;
+        track.style.transform = 'translateX(' + x + 'px)';
+      }
+      last = now;
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
 </script>
 </body>
 </html>
