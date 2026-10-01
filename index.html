@@ -13,6 +13,7 @@
 <meta property="og:url" content="https://washedupshades.com/">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://washedupshades.com/#org", "name": "Washed Up", "alternateName": ["Washed Up Shades", "Washed Up Sunglasses"], "url": "https://washedupshades.com/", "logo": "https://washedupshades.com/logo.png", "description": "A sunglasses brand selling cheap, bendy wraparound sunglasses with total honesty.", "sameAs": ["https://www.tiktok.com/@washedupshades", "https://www.instagram.com/washedupshades/", "https://www.youtube.com/@washedupshades"]}, {"@type": "WebSite", "@id": "https://washedupshades.com/#site", "name": "Washed Up", "alternateName": "Washed Up Shades", "url": "https://washedupshades.com/", "publisher": {"@id": "https://washedupshades.com/#org"}}]}</script>
+<script data-goatcounter="https://washedupshades.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 <title>Washed Up* Sunglasses | The Sh*ttiest Sunglasses on Earth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -651,8 +652,8 @@
     </div>
     <div class="counter">
       <p>You are visitor number</p>
-      <div class="digits" aria-label="000003"><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>3</span></div>
-      <p class="small">*This counter is fake. So far it's been us, and maybe Dale.</p>
+      <div class="digits" id="visit-digits" aria-label="000003"><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>3</span></div>
+      <p class="small" id="visit-note">*This counter is fake. So far it's been us, and maybe Dale.</p>
     </div>
     <p class="webring"><a href="#top">&#9664; Prev</a> &middot; Shitty Sunglasses Webring &middot; <a href="#top">Next &#9654;</a><br><span class="small">(We're the only member.)</span></p>
     <p><a href="#waitlist">Sign our guestbook!</a> (It's the waitlist.)</p>
@@ -1078,6 +1079,31 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !pop.hidden) hide();
     });
+  })();
+
+  // ---------- visitor counter (real on washedupshades.com, via GoatCounter) ----------
+  // Stays fake, and says so, anywhere else or if the count can't be loaded.
+  (function () {
+    if (!/(^|\.)washedupshades\.com$/.test(location.hostname) || !window.fetch) return;
+    var box = document.getElementById('visit-digits');
+    var note = document.getElementById('visit-note');
+    if (!box || !note) return;
+    fetch('https://washedupshades.goatcounter.com/counter/TOTAL.json')
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (data) {
+        var digits = String(data.count || '').replace(/[^0-9]/g, '');
+        if (!digits) return;
+        while (digits.length < 6) digits = '0' + digits;
+        box.innerHTML = '';
+        for (var i = 0; i < digits.length; i++) {
+          var s = document.createElement('span');
+          s.textContent = digits.charAt(i);
+          box.appendChild(s);
+        }
+        box.setAttribute('aria-label', digits);
+        note.textContent = "*This counter is real now. We're as surprised as you are.";
+      })
+      .catch(function () { /* keep the fake one */ });
   })();
 
   // ---------- tab title trick ----------
