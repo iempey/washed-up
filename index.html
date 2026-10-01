@@ -107,11 +107,6 @@
     color: var(--cyan);
     font-size: 18px;
   }
-  .welcome, .tagline, .tiny-print, .new {
-    justify-self: center;
-    background: var(--navy);
-    padding-inline: 8px;
-  }
   .wordart {
     margin: 0;
     font-family: var(--wordart);
@@ -220,8 +215,7 @@
     font-size: 15px;
     line-height: 1.35;
   }
-  /* navy backing so the starfield dots don't land between words */
-  .intro { margin: 0; font-size: 18px; background: var(--navy); }
+  .intro { margin: 0; font-size: 18px; }
   .intro b { color: var(--white); }
 
   /* ---------- the guestbook (the part that actually works) ---------- */
@@ -639,7 +633,11 @@
 
     function showSuccess(value) {
       successEmail.textContent = value;
-      successDale.hidden = daleValue() === 'no';
+      var dale = daleValue();
+      successDale.hidden = dale === 'no';
+      successDale.textContent = dale === 'maybe'
+        ? 'Your claim to be Dale is under review. We’ll be in touch. Probably.'
+        : 'Wait. Dale? If you really lost a pair at Gulf Shores this summer, we need to talk.';
       previewNote.hidden = LIVE;
       formView.hidden = true;
       guardView.hidden = true;
@@ -678,9 +676,22 @@
       return picked ? picked.value : 'no';
     }
 
+    // "Yes" gets asked where; "I might be Dale" has to make their case.
+    var DALE_PROMPTS = {
+      yes: { label: "Where'd you lose them?", placeholder: 'Gulf Shores, probably' },
+      maybe: { label: 'Are you sure? Explain how you could be Dale.', placeholder: "My name isn't Dale, but…" }
+    };
+    var whereLabel = document.getElementById('where-label');
+    var whereInput = document.getElementById('where');
+
     form.addEventListener('change', function (e) {
       if (e.target.name === 'dale') {
-        extra.hidden = daleValue() === 'no';
+        var prompt = DALE_PROMPTS[daleValue()];
+        extra.hidden = !prompt;
+        if (prompt) {
+          whereLabel.textContent = prompt.label;
+          whereInput.placeholder = prompt.placeholder;
+        }
       }
     });
 
