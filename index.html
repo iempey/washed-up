@@ -312,8 +312,9 @@
   .news time { font-family: var(--win); font-weight: 700; color: var(--navy); }
 
   /* ---------- flaws ---------- */
-  .flaws { margin: 0 0 14px; padding-left: 22px; font-size: 19px; }
-  .flaws li { margin-bottom: 4px; }
+  .flaws, .perks { margin: 0 0 14px; padding-left: 22px; font-size: 19px; }
+  .flaws li, .perks li { margin-bottom: 4px; }
+  .perks { margin: 0; }
   .flaws sup { color: #C00000; font-weight: 700; }
   .fine {
     border-top: 1px solid var(--silver-dark);
@@ -324,7 +325,7 @@
     gap: 4px;
   }
   .fine p { margin: 0 !important; }
-  .fine .sorry { color: #C00000; font-weight: 700; }
+  .verdict { margin: 12px 0 0 !important; font-size: 21px; font-weight: 700; color: var(--navy); }
 
   /* ---------- sand ---------- */
   .sand .window-body {
@@ -512,9 +513,9 @@
       <figure class="exhibit window">
         <div class="titlebar"><span>exhibit_a.jpg</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
         <img src="original-pair.jpg" width="760" height="363" alt="The original pair: glossy black wraparound sunglasses with smoke lenses, sitting on a paper towel on a kitchen counter">
-        <figcaption><b>Exhibit A:</b> the original pair, found floating in the ocean at Gulf Shores, Alabama, summer 2026. Not for sale. It's a holy relic.</figcaption>
+        <figcaption><b>Exhibit A:</b> the original pair, found skimming the bottom in waist-deep water at Gulf Shores, Alabama, summer 2026. Not for sale. It's a holy relic.</figcaption>
       </figure>
-      <p class="intro">My wife pulled these out of the Gulf. They looked like something a mechanic named Dale would wear, so that's who we decided lost them. He must be heartbroken. I put them on as a joke. Then I found out they're <b>actually good</b>. So now we're making more, on purpose.</p>
+      <p class="intro">My wife pulled these out of the Gulf. They looked like something a mechanic named Dale would wear, so that's who we decided lost them. He must be heartbroken. I put them on as a joke. Then I found out they're <b>actually great</b>. It felt wrong to keep them to ourselves. So now we're making more.</p>
     </div>
 
     <section class="window guestbook" id="waitlist">
@@ -580,23 +581,36 @@
   <section class="window" id="why">
     <div class="titlebar"><span>why_theyre_shitty.txt</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
     <div class="window-body">
-      <h2>Why these are the shittiest sunglasses on Earth</h2>
+      <h2>Why we thought these were the shittiest sunglasses on Earth</h2>
       <ul class="flaws">
         <li>They're made of plastic.<sup>*</sup></li>
         <li>The lenses are plastic too.<sup>**</sup></li>
         <li>They're bendy. Concerningly bendy.<sup>***</sup></li>
-        <li>They're not polarized.</li>
-        <li>Those vents on the arms? Useless.<sup>****</sup></li>
-        <li>They look like it's 2003.<sup>*****</sup></li>
+        <li>They're not polarized.<sup>****</sup></li>
+        <li>Those vents on the arms? Useless.<sup>*****</sup></li>
+        <li>They look like it's 2003.<sup>******</sup></li>
       </ul>
       <div class="fine">
         <p>* Nylon, technically. Plastic with a better lawyer. Light, flexible and hard to break.</p>
         <p>** Polycarbonate, the impact-resistant stuff that naturally blocks UV. We're getting ours lab-tested before we put a number on it.</p>
         <p>*** They bend way back and spring right back instead of snapping.</p>
-        <p class="sorry">No asterisk on "not polarized." There's no upside. We're sorry.</p>
-        <p>**** We honestly don't know what they do. Nobody does.</p>
-        <p>***** Correct.</p>
+        <p>**** You can still read your phone and your dashboard.</p>
+        <p>***** We honestly don't know what they do. Nobody does.</p>
+        <p>****** Correct.</p>
       </div>
+      <p class="verdict">Looks are deceiving.</p>
+    </div>
+  </section>
+
+  <section class="window" id="want">
+    <div class="titlebar"><span>why_you_want_a_pair.txt</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
+    <div class="window-body">
+      <h2>Why you actually want a pair</h2>
+      <ul class="perks">
+        <li>Lose them. Sit on them. Drop them off the boat. They're about $15, not $200.</li>
+        <li>No case needed. Throw them in the cupholder.</li>
+        <li>The pair we found turned out to be safety glasses. Ours are getting tested to the same standard. Lab report first, bragging second.</li>
+      </ul>
     </div>
   </section>
 
@@ -604,8 +618,8 @@
     <div class="titlebar"><span>sand.exe</span><span class="winbtns" aria-hidden="true"><span>_</span><span>&#9633;</span><span>&times;</span></span></div>
     <div class="window-body">
       <h2>Now with sand!</h2>
-      <p>Every pair ships with a sealed baggie of genuine sand, because that's how we found the first one.</p>
-      <p>The sand gets its own bag so it can't scratch your lenses. Sand scratches lenses. We learned that the hard way.</p>
+      <p>Every pair of The Dale ships with a sealed baggie of genuine sand, because that's where we found the first one.</p>
+      <p>The sand gets its own bag so it can't scratch your lenses.</p>
       <p>Don't want sand? Add the <b>$2 de-sanding fee</b> at checkout. We'll leave it out and try not to take it personally.</p>
     </div>
   </section>
@@ -613,7 +627,7 @@
   <section class="dale" id="dale">
     <div class="letter">
       <p>Dear Dale,</p>
-      <p>We found your sunglasses floating in the ocean at Gulf Shores this summer. They were the shittiest pair of sunglasses we'd ever seen.</p>
+      <p>We found your sunglasses in the ocean at Gulf Shores this summer. They were the shittiest pair of sunglasses we'd ever seen.</p>
       <p>Super bendy, cheap plastic lenses, fake vents that do nothing. Absolute trash. We laughed our asses off about how bad they were.</p>
       <p>Then I put them on.</p>
       <p>And everything changed.</p>
@@ -663,7 +677,7 @@
     </div>
     <p class="webring"><a href="#top">&#9664; Prev</a> &middot; Shitty Sunglasses Webring &middot; <a href="#top">Next &#9654;</a><br><span class="small">(We're the only member.)</span></p>
     <p><a href="#waitlist">Sign our guestbook!</a> (It's the waitlist.)</p>
-    <p class="small">Best viewed in Internet Explorer 6 at 800&times;600. Last updated October 1, 2026.</p>
+    <p class="small">Best viewed in Internet Explorer 6 at 800&times;600. Last updated October 2, 2026.</p>
     <p class="small">&copy; 2026 Washed Up. Not affiliated with Dale.</p>
   </footer>
 
